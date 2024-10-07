@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Setono\SyliusGiftCardPlugin\Modifier;
 
-use Doctrine\Persistence\ObjectManager;
 use RuntimeException;
 use Setono\SyliusGiftCardPlugin\Model\AdjustmentInterface;
 use Setono\SyliusGiftCardPlugin\Model\GiftCardInterface;
@@ -16,13 +15,6 @@ use function sprintf;
  */
 final class OrderGiftCardAmountModifier implements OrderGiftCardAmountModifierInterface
 {
-    private ObjectManager $giftCardManager;
-
-    public function __construct(ObjectManager $giftCardManager)
-    {
-        $this->giftCardManager = $giftCardManager;
-    }
-
     public function decrement(OrderInterface $order): void
     {
         foreach ($order->getAdjustments(AdjustmentInterface::ORDER_GIFT_CARD_ADJUSTMENT) as $adjustment) {
@@ -41,8 +33,6 @@ final class OrderGiftCardAmountModifier implements OrderGiftCardAmountModifierIn
                 $giftCard->setAmount($giftCard->getAmount() - $amount);
             }
         }
-
-        $this->giftCardManager->flush();
     }
 
     public function increment(OrderInterface $order): void
@@ -56,8 +46,6 @@ final class OrderGiftCardAmountModifier implements OrderGiftCardAmountModifierIn
                 $giftCard->enable();
             }
         }
-
-        $this->giftCardManager->flush();
     }
 
     private static function getGiftCard(OrderInterface $order, string $code): GiftCardInterface

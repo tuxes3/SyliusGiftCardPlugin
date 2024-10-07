@@ -7,8 +7,6 @@
         <!-- Needs to be public because it is called from the state machine -->
         <service id="setono_sylius_gift_card.modifier.order_gift_card_amount"
                  class="Setono\SyliusGiftCardPlugin\Modifier\OrderGiftCardAmountModifier"
-                 public="true">
-            <argument type="service" id="setono_sylius_gift_card.manager.gift_card"/>
-        </service>
+                 public="true"/>
     </services>
 </container>
