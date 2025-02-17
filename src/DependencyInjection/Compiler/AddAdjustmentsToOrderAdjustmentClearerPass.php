@@ -20,6 +20,9 @@ final class AddAdjustmentsToOrderAdjustmentClearerPass implements CompilerPassIn
         $clearerDefinition = $container->getDefinition('sylius.order_processing.order_adjustments_clearer');
 
         $adjustmentsToRemove = $clearerDefinition->getArgument(0);
+        if (!is_array($adjustmentsToRemove)) {
+            return;
+        }
         Assert::isArray($adjustmentsToRemove);
 
         $adjustmentsToRemove[] = AdjustmentInterface::ORDER_GIFT_CARD_ADJUSTMENT;
