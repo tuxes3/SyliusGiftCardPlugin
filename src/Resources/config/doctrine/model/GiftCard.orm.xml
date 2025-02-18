@@ -22,22 +22,22 @@
             <gedmo:timestampable on="update"/>
         </field>
 
-        <many-to-one field="customer" target-entity="Sylius\Component\Customer\Model\CustomerInterface">
+        <many-to-one field="customer" target-entity="Sylius\Component\Core\Model\CustomerInterface">
             <join-column name="customer_id" referenced-column-name="id" nullable="true" on-delete="SET NULL"/>
         </many-to-one>
 
-        <many-to-one field="channel" target-entity="Sylius\Component\Channel\Model\ChannelInterface">
+        <many-to-one field="channel" target-entity="Sylius\Component\Core\Model\ChannelInterface">
             <join-column name="channel_id" referenced-column-name="id" nullable="false"/>
         </many-to-one>
 
         <!-- Refers to the order item unit where this gift card was bought -->
-        <one-to-one field="orderItemUnit" target-entity="Sylius\Component\Order\Model\OrderItemUnitInterface"
+        <one-to-one field="orderItemUnit" target-entity="Sylius\Component\Core\Model\OrderItemUnitInterface"
                     inversed-by="giftCard">
             <join-column name="order_item_unit_id" referenced-column-name="id" on-delete="CASCADE"/>
         </one-to-one>
 
         <!-- A list of orders where this gift card was applied / used -->
-        <many-to-many field="appliedOrders" target-entity="Sylius\Component\Order\Model\OrderInterface"
+        <many-to-many field="appliedOrders" target-entity="Sylius\Component\Core\Model\OrderInterface"
                       mapped-by="giftCards"/>
     </mapped-superclass>
 </doctrine-mapping>
