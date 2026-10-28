@@ -20,6 +20,6 @@ final class AccountMenuListener
     {
         $menu->addChild('gift_cards', ['route' => 'setono_sylius_gift_card_shop_gift_card_index'])
             ->setLabel('setono_sylius_gift_card.ui.gift_cards')
-            ->setLabelAttribute('icon', 'gift');
+            ->setLabelAttribute('icon', 'tabler:gift');
     }
 }

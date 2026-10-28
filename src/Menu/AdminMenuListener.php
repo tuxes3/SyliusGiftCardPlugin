@@ -25,7 +25,7 @@ final class AdminMenuListener
                 'route' => 'setono_sylius_gift_card_admin_gift_card_index',
             ])
             ->setLabel('setono_sylius_gift_card.ui.gift_cards')
-            ->setLabelAttribute('icon', 'gift')
+            ->setLabelAttribute('icon', 'tabler:gift')
         ;
     }
 }

@@ -45,3 +45,18 @@ sylius_twig_hooks:
             setono_sylius_gift_card_gift_cards:
                 template: '@SetonoSyliusGiftCardPlugin/Shop/Order/Summary/_giftCards.html.twig'
                 priority: 150
+
+        'setono_sylius_gift_card.shop.account.gift_card.index.content':
+            breadcrumbs:
+                template: '@SetonoSyliusGiftCardPlugin/Shop/Account/GiftCard/Index/_breadcrumb.html.twig'
+                priority: 200
+
+        'setono_sylius_gift_card.shop.account.gift_card.index.content.main':
+            grid:
+                template: '@SyliusShop/shared/grid.html.twig'
+                priority: -100
+
+        'setono_sylius_gift_card.shop.account.gift_card.index.content.main.header':
+            title:
+                template: '@SetonoSyliusGiftCardPlugin/Shop/Account/GiftCard/Index/_header.html.twig'
+                priority: 0
