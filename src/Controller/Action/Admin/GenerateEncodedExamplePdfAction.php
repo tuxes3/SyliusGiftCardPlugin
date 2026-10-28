@@ -28,7 +28,8 @@ final class GenerateEncodedExamplePdfAction
         $giftCardConfiguration = $this->giftCardConfigurationRepository->find($id);
         Assert::isInstanceOf($giftCardConfiguration, GiftCardConfigurationInterface::class);
 
-        $form = $this->formFactory->create(GiftCardConfigurationType::class, $giftCardConfiguration);
+        // The edit form sends its data as PUT, so the form must expect PUT to pick the changes up
+        $form = $this->formFactory->create(GiftCardConfigurationType::class, $giftCardConfiguration, ['method' => Request::METHOD_PUT]);
         $form->handleRequest($request);
 
         return new Response($this->pdfRenderer->render($giftCard, $giftCardConfiguration)->getEncodedContent());

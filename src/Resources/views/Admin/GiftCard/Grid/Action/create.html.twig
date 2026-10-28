@@ -1,7 +1,7 @@
 {# todo this should be a knp menu builder instead #}
 <div class="btn-group" role="group">
     <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-        <twig:ux:icon name="mdi:plus" />
+        {{ ux_icon('tabler:plus', {class: 'icon'}) }}
         {{ 'sylius.ui.create'|trans }}
     </button>
     <ul class="dropdown-menu">

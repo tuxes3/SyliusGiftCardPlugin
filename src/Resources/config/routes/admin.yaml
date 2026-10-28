@@ -9,11 +9,7 @@ setono_sylius_gift_card_admin_gift_card:
         grid: setono_sylius_gift_card_admin_gift_card
         vars:
             all:
-                subheader: setono_sylius_gift_card.ui.manage_gift_cards
-                templates:
-                    form: "@SetonoSyliusGiftCardPlugin/Admin/GiftCard/_form.html.twig"
-            index:
-                icon: 'gift'
+                hook_prefix: setono_sylius_gift_card_admin.gift_card
     type: sylius.resource
 
 setono_sylius_gift_card_admin_gift_card_pdf:
@@ -49,19 +45,7 @@ setono_sylius_gift_card_admin_gift_card_configuration:
         grid: setono_sylius_gift_card_admin_gift_card_configuration
         vars:
             all:
-                subheader: setono_sylius_gift_card.ui.manage_gift_card_configurations
-            index:
-                icon: 'gift'
-                templates:
-                    breadcrumb: '@SetonoSyliusGiftCardPlugin/Admin/GiftCardConfiguration/Index/_breadcrumb.html.twig'
-            create:
-                templates:
-                    breadcrumb: '@SetonoSyliusGiftCardPlugin/Admin/GiftCardConfiguration/Create/_breadcrumb.html.twig'
-                    form: "@SetonoSyliusGiftCardPlugin/Admin/GiftCardConfiguration/_form.html.twig"
-            update:
-                templates:
-                    breadcrumb: '@SetonoSyliusGiftCardPlugin/Admin/GiftCardConfiguration/Update/_breadcrumb.html.twig'
-                    form: "@SetonoSyliusGiftCardPlugin/Admin/GiftCardConfiguration/_form.html.twig"
+                hook_prefix: setono_sylius_gift_card_admin.gift_card_configuration
     type: sylius.resource
 
 # todo what is this route doing?
@@ -93,11 +77,10 @@ setono_sylius_gift_card_admin_gift_card_create:
                 route: setono_sylius_gift_card_admin_gift_card_index
             permission: true
             vars:
+                hook_prefix: setono_sylius_gift_card_admin.gift_card
                 route:
                     parameters:
                         channelCode: $channelCode
-                templates:
-                    form: "@SetonoSyliusGiftCardPlugin/Admin/GiftCard/_form.html.twig"
 
 setono_sylius_gift_card_admin_gift_card_orders_index:
     path: /gift-cards/{id}/orders
