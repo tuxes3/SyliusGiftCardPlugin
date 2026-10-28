@@ -1,0 +1,22 @@
+sylius_twig_hooks:
+    hooks:
+        'sylius_admin.order.show.content.sections.summary':
+            setono_sylius_gift_card_gift_cards:
+                template: '@SetonoSyliusGiftCardPlugin/Admin/Order/Show/Summary/_giftCards.html.twig'
+                priority: -100
+
+        'sylius_shop.cart.index.content.form.sections.general.summary':
+            setono_sylius_gift_card_gift_cards:
+                template: '@SetonoSyliusGiftCardPlugin/Shop/Cart/Summary/_giftCards.html.twig'
+                priority: 150
+
+        'sylius_shop.checkout.common.sidebar.summary.total':
+            setono_sylius_gift_card_gift_cards:
+                template: '@SetonoSyliusGiftCardPlugin/Shop/Checkout/Summary/_giftCards.html.twig'
+                priority: 50
+
+        # Shared by the order page in the customer account and the checkout complete step
+        'sylius_shop.shared.order.show.summary.table_summary':
+            setono_sylius_gift_card_gift_cards:
+                template: '@SetonoSyliusGiftCardPlugin/Shop/Order/Summary/_giftCards.html.twig'
+                priority: 150

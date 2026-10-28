@@ -1,6 +1,7 @@
 imports:
     - { resource: "@SetonoSyliusGiftCardPlugin/Resources/config/grids.yaml" }
     - { resource: "@SetonoSyliusGiftCardPlugin/Resources/config/sylius_ui.yaml" }
+    - { resource: "@SetonoSyliusGiftCardPlugin/Resources/config/app/twig_hooks.yaml" }
 
     - { resource: "@SetonoSyliusGiftCardPlugin/Resources/config/state_machine/sylius_order.yaml" }
     - { resource: "@SetonoSyliusGiftCardPlugin/Resources/config/state_machine/sylius_order_checkout.yaml" }

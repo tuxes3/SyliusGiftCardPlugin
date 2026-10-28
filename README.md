@@ -84,9 +84,12 @@ $bundles = [
 ];
 ```
 
-### Copy templates
+### Templates
 
-You will find the templates you need to override in the [test application](https://github.com/Setono/SyliusGiftCardPlugin/tree/master/tests/Application/templates).
+No template overrides are needed. The plugin hooks the applied gift cards into the Sylius twig hooks
+(see `src/Resources/config/app/twig_hooks.yaml`) of the admin order page, the cart summary, the checkout
+sidebar and the order summary shown in the customer account and on the checkout complete step.
+The configuration is loaded with the `app/config.yaml` import above.
 
 ### Extend entities
 
