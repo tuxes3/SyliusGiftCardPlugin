@@ -63,8 +63,10 @@ final class AddGiftCardToOrderAction
             return new RedirectResponse($this->redirectRouteResolver->getUrlToRedirectTo($request, 'sylius_shop_cart_summary'));
         }
 
+        // A submitted form reaching this point is invalid. Answer with 400 so the form's JS
+        // shows the errors instead of treating the response as success and redirecting.
         return new Response($this->twig->render('@SetonoSyliusGiftCardPlugin/Shop/addGiftCardToOrder.html.twig', [
             'form' => $form->createView(),
-        ]));
+        ]), $form->isSubmitted() ? Response::HTTP_BAD_REQUEST : Response::HTTP_OK);
     }
 }
