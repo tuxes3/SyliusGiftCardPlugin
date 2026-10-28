@@ -1,5 +1,20 @@
 sylius_twig_hooks:
     hooks:
+        'sylius_admin.product.create.content.form.sections.general':
+            setono_sylius_gift_card_gift_card:
+                template: '@SetonoSyliusGiftCardPlugin/Admin/Product/Form/_giftCard.html.twig'
+                priority: 450
+
+        'sylius_admin.product.update.content.form.sections.general':
+            setono_sylius_gift_card_gift_card:
+                template: '@SetonoSyliusGiftCardPlugin/Admin/Product/Form/_giftCard.html.twig'
+                priority: 450
+
+        'sylius_shop.product.show.content.info.summary.add_to_cart':
+            setono_sylius_gift_card_gift_card_information:
+                template: '@SetonoSyliusGiftCardPlugin/Shop/Product/Show/_addToCartGiftCardInformation.html.twig'
+                priority: 50
+
         'sylius_admin.order.show.content.sections.summary':
             setono_sylius_gift_card_gift_cards:
                 template: '@SetonoSyliusGiftCardPlugin/Admin/Order/Show/Summary/_giftCards.html.twig'

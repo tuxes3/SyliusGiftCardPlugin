@@ -1,0 +1,8 @@
+{% set form = hookable_metadata.context.form %}
+
+<div class="mb-3">
+    {{ form_row(form.giftCard, sylius_test_form_attribute('gift-card')|merge({ label_attr: { class: 'checkbox-switch' } })) }}
+</div>
+<div class="mb-3">
+    {{ form_row(form.giftCardAmountConfigurable, sylius_test_form_attribute('gift-card-amount-configurable')|merge({ label_attr: { class: 'checkbox-switch' } })) }}
+</div>
