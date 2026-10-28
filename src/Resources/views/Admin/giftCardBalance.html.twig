@@ -9,7 +9,7 @@
 {% block title %}{{ 'setono_sylius_gift_card.ui.balance'|trans }} {{ parent() }}{% endblock %}
 
 {% block body %}
-    {% hook 'add_admin.custom' %}
+    {% hook 'setono_sylius_gift_card_admin.gift_card.balance' %}
 <div class="page-wrapper">
 
     <div class="page-header" data-sticky-header>

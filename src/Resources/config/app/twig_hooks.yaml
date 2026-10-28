@@ -77,3 +77,11 @@ sylius_twig_hooks:
         'setono_sylius_gift_card_admin.gift_card_configuration.update.content.form.sections':
             general:
                 template: '@SetonoSyliusGiftCardPlugin/Admin/GiftCardConfiguration/_form.html.twig'
+
+        'setono_sylius_gift_card_admin.gift_card.balance':
+            sidebar:
+                template: '@SyliusAdmin/shared/crud/common/sidebar.html.twig'
+                priority: 200
+            navbar:
+                template: '@SyliusAdmin/shared/crud/common/navbar.html.twig'
+                priority: 100
