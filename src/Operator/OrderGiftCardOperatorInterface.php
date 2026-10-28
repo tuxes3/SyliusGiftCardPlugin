@@ -16,4 +16,9 @@ interface OrderGiftCardOperatorInterface
     public function enable(OrderInterface $order): void;
 
     public function disable(OrderInterface $order): void;
+
+    /**
+     * Sends the gift cards bought on the given order to the customer
+     */
+    public function send(OrderInterface $order): void;
 }

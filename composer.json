@@ -52,6 +52,7 @@
         "symfony/serializer": "^6.4 || ^7.0",
         "symfony/translation-contracts": "^2.4 || ^3.5",
         "symfony/validator": "^6.4 || ^7.0",
+        "symfony/workflow": "^6.4 || ^7.0",
         "twig/twig": "^2.15 || ^3.5",
         "webimpress/safe-writer": "^2.2",
         "webmozart/assert": "^1.11"
