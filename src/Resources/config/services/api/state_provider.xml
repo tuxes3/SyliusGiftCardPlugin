@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns="http://symfony.com/schema/dic/services"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="setono_sylius_gift_card.api.state_provider.gift_card_balance"
+                 class="Setono\SyliusGiftCardPlugin\Api\StateProvider\GiftCardBalanceProvider">
+            <argument type="service" id="setono_sylius_gift_card.repository.gift_card" />
+            <tag name="api_platform.state_provider" />
+        </service>
+    </services>
+</container>

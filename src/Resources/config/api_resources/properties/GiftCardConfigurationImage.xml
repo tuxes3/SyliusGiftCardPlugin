@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<properties
+    xmlns="https://api-platform.com/schema/metadata/properties-3.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://api-platform.com/schema/metadata/properties-3.0 https://api-platform.com/schema/metadata/properties-3.0.xsd"
+>
+    <property resource="%setono_sylius_gift_card.model.gift_card_configuration_image.class%" name="id" identifier="true" writable="false"/>
+    <property resource="%setono_sylius_gift_card.model.gift_card_configuration_image.class%" name="path" required="true"/>
+    <property resource="%setono_sylius_gift_card.model.gift_card_configuration_image.class%" name="owner" required="true"/>
+    <property resource="%setono_sylius_gift_card.model.gift_card_configuration_image.class%" name="type" required="true"/>
+</properties>

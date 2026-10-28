@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Setono\SyliusGiftCardPlugin\Api\Command;
 
+use Setono\SyliusGiftCardPlugin\Api\Attribute\GiftCardConfigurationCodeAware;
+
+#[GiftCardConfigurationCodeAware]
 class AssociateConfigurationToChannel implements ConfigurationCodeAwareInterface
 {
-    public ?string $configurationCode = null;
-
-    public function __construct(public string $localeCode, public string $channelCode)
+    public function __construct(public string $localeCode, public string $channelCode, public ?string $configurationCode = null)
     {
     }
 

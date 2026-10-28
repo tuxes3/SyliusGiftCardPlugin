@@ -5,8 +5,10 @@
     <imports>
         <import resource="api/command_handler.xml"/>
         <import resource="api/controller.xml"/>
-        <import resource="api/data_persister.xml"/>
-        <import resource="api/data_transformer.xml"/>
+        <import resource="api/context_builder.xml"/>
         <import resource="api/doctrine.xml"/>
+        <import resource="api/metadata.xml"/>
+        <import resource="api/state_processor.xml"/>
+        <import resource="api/state_provider.xml"/>
     </imports>
 </container>

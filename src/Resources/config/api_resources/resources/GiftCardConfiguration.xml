@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<resources
+    xmlns="https://api-platform.com/schema/metadata/resources-3.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://api-platform.com/schema/metadata/resources-3.0 https://api-platform.com/schema/metadata/resources-3.0.xsd"
+>
+    <resource class="%setono_sylius_gift_card.model.gift_card_configuration.class%" shortName="GiftCardConfiguration">
+        <operations>
+            <operation
+                name="setono_sylius_gift_card_admin_gift_card_configuration_get_collection"
+                class="ApiPlatform\Metadata\GetCollection"
+                uriTemplate="/admin/gift-card-configurations"
+            >
+                <normalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>admin:gift_card_configuration:read</value>
+                            </values>
+                        </value>
+                    </values>
+                </normalizationContext>
+            </operation>
+
+            <operation
+                name="setono_sylius_gift_card_admin_gift_card_configuration_post"
+                class="ApiPlatform\Metadata\Post"
+                uriTemplate="/admin/gift-card-configurations"
+                messenger="input"
+                input="Setono\SyliusGiftCardPlugin\Api\Command\CreateGiftCardConfiguration"
+            >
+                <denormalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>admin:gift_card_configuration:create</value>
+                            </values>
+                        </value>
+                    </values>
+                </denormalizationContext>
+                <normalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>admin:gift_card_configuration:read</value>
+                            </values>
+                        </value>
+                    </values>
+                </normalizationContext>
+                <validationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>setono_sylius_gift_card_configuration</value>
+                            </values>
+                        </value>
+                    </values>
+                </validationContext>
+            </operation>
+
+            <operation
+                name="setono_sylius_gift_card_admin_gift_card_configuration_get"
+                class="ApiPlatform\Metadata\Get"
+                uriTemplate="/admin/gift-card-configurations/{code}"
+            >
+                <uriVariables>
+                    <uriVariable parameterName="code" fromClass="%setono_sylius_gift_card.model.gift_card_configuration.class%"/>
+                </uriVariables>
+                <normalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>admin:gift_card_configuration:read</value>
+                            </values>
+                        </value>
+                    </values>
+                </normalizationContext>
+            </operation>
+
+            <operation
+                name="setono_sylius_gift_card_admin_gift_card_configuration_put"
+                class="ApiPlatform\Metadata\Put"
+                uriTemplate="/admin/gift-card-configurations/{code}"
+            >
+                <uriVariables>
+                    <uriVariable parameterName="code" fromClass="%setono_sylius_gift_card.model.gift_card_configuration.class%"/>
+                </uriVariables>
+                <denormalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>admin:gift_card_configuration:update</value>
+                            </values>
+                        </value>
+                    </values>
+                </denormalizationContext>
+                <normalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>admin:gift_card_configuration:read</value>
+                            </values>
+                        </value>
+                    </values>
+                </normalizationContext>
+                <validationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>sylius</value>
+                            </values>
+                        </value>
+                    </values>
+                </validationContext>
+            </operation>
+
+            <operation
+                name="setono_sylius_gift_card_admin_gift_card_configuration_delete"
+                class="ApiPlatform\Metadata\Delete"
+                uriTemplate="/admin/gift-card-configurations/{code}"
+            >
+                <uriVariables>
+                    <uriVariable parameterName="code" fromClass="%setono_sylius_gift_card.model.gift_card_configuration.class%"/>
+                </uriVariables>
+            </operation>
+
+            <operation
+                name="setono_sylius_gift_card_admin_gift_card_configuration_associate_channel"
+                class="ApiPlatform\Metadata\Patch"
+                uriTemplate="/admin/gift-card-configurations/{code}/associate-channel"
+                messenger="input"
+                input="Setono\SyliusGiftCardPlugin\Api\Command\AssociateConfigurationToChannel"
+            >
+                <uriVariables>
+                    <uriVariable parameterName="code" fromClass="%setono_sylius_gift_card.model.gift_card_configuration.class%"/>
+                </uriVariables>
+                <openapi summary="Associate a channel to the configuration"/>
+                <denormalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>admin:gift_card_configuration:associate_channel</value>
+                            </values>
+                        </value>
+                    </values>
+                </denormalizationContext>
+                <normalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>admin:gift_card_configuration:read</value>
+                            </values>
+                        </value>
+                    </values>
+                </normalizationContext>
+                <validationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>sylius</value>
+                            </values>
+                        </value>
+                    </values>
+                </validationContext>
+            </operation>
+        </operations>
+    </resource>
+</resources>

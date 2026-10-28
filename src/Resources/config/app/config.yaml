@@ -16,13 +16,6 @@ sylius_mailer:
             subject: setono_sylius_gift_card.email.your_gift_cards_you_bought_in_the_order
             template: "@SetonoSyliusGiftCardPlugin/Email/giftCardsFromOrder.html.twig"
 
-framework:
-    serializer:
-        enabled: true
-        mapping:
-            paths:
-                - '%kernel.project_dir%/vendor/setono/sylius-gift-card-plugin/src/Resources/config/serialization/'
-
 liip_imagine:
     filter_sets:
         setono_sylius_gift_card_background:

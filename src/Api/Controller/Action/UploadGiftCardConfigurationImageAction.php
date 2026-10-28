@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusGiftCardPlugin\Api\Controller\Action;
 
-use ApiPlatform\Api\IriConverterInterface;
-use ApiPlatform\Core\Api\IriConverterInterface as LegacyIriConverterInterface;
+use ApiPlatform\Metadata\IriConverterInterface;
 use Setono\SyliusGiftCardPlugin\Model\GiftCardConfigurationImageInterface;
 use Setono\SyliusGiftCardPlugin\Model\GiftCardConfigurationInterface;
 use Sylius\Component\Core\Uploader\ImageUploaderInterface;
@@ -17,14 +16,11 @@ use Webmozart\Assert\Assert;
 
 final class UploadGiftCardConfigurationImageAction
 {
-    /**
-     * @param LegacyIriConverterInterface|IriConverterInterface $iriConverter
-     */
     public function __construct(
         private readonly FactoryInterface $giftCardConfigurationImageFactory,
         private readonly RepositoryInterface $giftCardConfigurationImageRepository,
         private readonly ImageUploaderInterface $imageUploader,
-        private $iriConverter
+        private readonly IriConverterInterface $iriConverter,
     ) {
     }
 
@@ -43,7 +39,7 @@ final class UploadGiftCardConfigurationImageAction
 
         $image->setType($imageType);
 
-        $ownerIri = $request->request->get('owner') ?? $request->query->get('type');
+        $ownerIri = $request->request->get('owner') ?? $request->query->get('owner');
         Assert::stringNotEmpty($ownerIri);
 
         $owner = $this->getOwner($ownerIri);
@@ -62,17 +58,7 @@ final class UploadGiftCardConfigurationImageAction
 
     private function getOwner(string $ownerIri): GiftCardConfigurationInterface
     {
-        if ($this->iriConverter instanceof LegacyIriConverterInterface) {
-            $owner = $this->iriConverter->getItemFromIri($ownerIri);
-        } else {
-            /**
-             * @psalm-suppress UndefinedDocblockClass
-             *
-             * @var mixed $owner
-             */
-            $owner = $this->iriConverter->getResourceFromIri($ownerIri);
-        }
-
+        $owner = $this->iriConverter->getResourceFromIri($ownerIri);
         Assert::isInstanceOf($owner, GiftCardConfigurationInterface::class);
 
         return $owner;
