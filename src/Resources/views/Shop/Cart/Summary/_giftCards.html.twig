@@ -1,0 +1,38 @@
+{% import '@SyliusShop/shared/macro/money.html.twig' as money %}
+
+{# @var \Setono\SyliusGiftCardPlugin\Model\OrderInterface cart #}
+{% set cart = hookable_metadata.context.cart %}
+
+{% set gift_card_adjustment = constant('Setono\\SyliusGiftCardPlugin\\Model\\AdjustmentInterface::ORDER_GIFT_CARD_ADJUSTMENT') %}
+{% set gift_card_adjustments = cart.getAdjustments(gift_card_adjustment) %}
+
+{% if gift_card_adjustments is not empty %}
+    <div class="hstack gap-2 mb-2">
+        <div>{{ 'setono_sylius_gift_card.ui.gift_cards_adjustment_total'|trans }}:</div>
+        <div id="setono-cart-gift-card-total" class="ms-auto text-end" {{ sylius_test_html_attribute('cart-gift-card-total') }}>
+            {{ money.convertAndFormat(cart.getAdjustmentsTotal(gift_card_adjustment)) }}
+        </div>
+    </div>
+
+    {% for adjustment in gift_card_adjustments %}
+        {# @var \Setono\SyliusGiftCardPlugin\Model\AdjustmentInterface adjustment #}
+        <div class="hstack gap-2 mb-2 ps-2 text-body-tertiary" {{ sylius_test_html_attribute('cart-gift-card', adjustment.originCode) }}>
+            <small>
+                {{ adjustment.originCode }}
+                <a
+                    href="{{ path('setono_sylius_gift_card_shop_remove_gift_card_from_order', {'giftCard': adjustment.originCode}) }}"
+                    class="link-danger"
+                    title="{{ 'sylius.ui.delete'|trans }}"
+                    {{ sylius_test_html_attribute('cart-remove-gift-card', adjustment.originCode) }}
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M18 6l-12 12"></path>
+                        <path d="M6 6l12 12"></path>
+                    </svg>
+                </a>
+            </small>
+            <small class="ms-auto text-end">{{ money.convertAndFormat(adjustment.amount) }}</small>
+        </div>
+    {% endfor %}
+{% endif %}
