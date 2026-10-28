@@ -1,1 +1,10 @@
-{{ render(url('setono_sylius_gift_card_shop_partial_add_gift_card_to_order')) }}
+{# The block posts its own form, so it is rendered below the cart form instead of inside it #}
+{% set cart = hookable_metadata.context.cart|default(null) %}
+
+{% if cart is null or not cart.empty %}
+    <div class="row">
+        <div class="col-12 col-xl-8">
+            {{ render(url('setono_sylius_gift_card_shop_partial_add_gift_card_to_order')) }}
+        </div>
+    </div>
+{% endif %}

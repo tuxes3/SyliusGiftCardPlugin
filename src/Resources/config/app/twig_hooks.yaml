@@ -20,6 +20,16 @@ sylius_twig_hooks:
                 template: '@SetonoSyliusGiftCardPlugin/Admin/Order/Show/Summary/_giftCards.html.twig'
                 priority: -100
 
+        'sylius_shop.base#javascripts':
+            setono_sylius_gift_card_javascripts:
+                template: '@SetonoSyliusGiftCardPlugin/Shop/Layout/_javascripts.html.twig'
+
+        # Below the cart form, as the gift card block posts a form of its own
+        'sylius_shop.cart.index.content':
+            setono_sylius_gift_card_add_gift_card:
+                template: '@SetonoSyliusGiftCardPlugin/Cart/_giftCard.html.twig'
+                priority: 50
+
         'sylius_shop.cart.index.content.form.sections.general.summary':
             setono_sylius_gift_card_gift_cards:
                 template: '@SetonoSyliusGiftCardPlugin/Shop/Cart/Summary/_giftCards.html.twig'
