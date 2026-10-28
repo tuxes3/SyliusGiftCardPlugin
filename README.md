@@ -86,10 +86,31 @@ $bundles = [
 
 ### Templates
 
-No template overrides are needed. The plugin hooks the applied gift cards into the Sylius twig hooks
-(see `src/Resources/config/app/twig_hooks.yaml`) of the admin order page, the cart summary, the checkout
-sidebar and the order summary shown in the customer account and on the checkout complete step.
-The configuration is loaded with the `app/config.yaml` import above.
+No template overrides are needed. The plugin renders everything through Sylius twig hooks, configured in
+`src/Resources/config/app/twig_hooks.yaml` and loaded with the `app/config.yaml` import above:
+
+- Admin: the gift card fields of the product form, the gift card and gift card configuration forms
+  (hook prefixes `setono_sylius_gift_card_admin.gift_card` and `setono_sylius_gift_card_admin.gift_card_configuration`)
+  and the redeemed gift cards in the order summary.
+- Shop: the amount and message fields when adding a gift card to the cart, the field to redeem a gift card
+  below the cart, the redeemed gift cards in the cart, checkout and order summaries, and the customer's gift
+  card list in the account (`setono_sylius_gift_card.shop.account.gift_card.index`).
+
+To change or remove a part, override or disable its hook item, for example the script that submits the redeem form:
+
+```yaml
+sylius_twig_hooks:
+    hooks:
+        'sylius_shop.base#javascripts':
+            setono_sylius_gift_card_javascripts:
+                enabled: false
+```
+
+### State machine
+
+The plugin works with both state machine adapters of Sylius 2. With the default Symfony Workflow adapter it
+listens to the completed transitions of the `sylius_order`, `sylius_order_checkout` and `sylius_order_payment`
+workflows, with winzou it registers the equivalent callbacks.
 
 ### Extend entities
 
