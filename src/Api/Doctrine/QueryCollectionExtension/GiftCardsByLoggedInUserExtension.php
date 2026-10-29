@@ -11,15 +11,21 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\QueryBuilder;
 use Setono\SyliusGiftCardPlugin\Model\GiftCardInterface;
 use Sylius\Bundle\ApiBundle\Context\UserContextInterface;
-use Sylius\Component\Core\Model\AdminUserInterface;
+use Sylius\Bundle\ApiBundle\SectionResolver\ShopApiSection;
+use Sylius\Bundle\CoreBundle\SectionResolver\SectionProviderInterface;
 use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+/**
+ * Limits the gift card collection of the shop API to the gift cards of the logged in customer
+ */
 final class GiftCardsByLoggedInUserExtension implements QueryCollectionExtensionInterface
 {
-    public function __construct(private readonly UserContextInterface $userContext)
-    {
+    public function __construct(
+        private readonly UserContextInterface $userContext,
+        private readonly SectionProviderInterface $sectionProvider,
+    ) {
     }
 
     public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, ?Operation $operation = null, array $context = []): void
@@ -28,11 +34,11 @@ final class GiftCardsByLoggedInUserExtension implements QueryCollectionExtension
             return;
         }
 
-        $user = $this->userContext->getUser();
-
-        if ($user instanceof AdminUserInterface) {
+        if (!$this->sectionProvider->getSection() instanceof ShopApiSection) {
             return;
         }
+
+        $user = $this->userContext->getUser();
 
         if (!$user instanceof ShopUserInterface) {
             throw new AccessDeniedException();

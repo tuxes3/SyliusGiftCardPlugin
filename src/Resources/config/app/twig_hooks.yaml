@@ -1,9 +1,34 @@
 sylius_twig_hooks:
     hooks:
+        'sylius_admin.product.create.content.form.sections.general':
+            setono_sylius_gift_card_gift_card:
+                template: '@SetonoSyliusGiftCardPlugin/Admin/Product/Form/_giftCard.html.twig'
+                priority: 450
+
+        'sylius_admin.product.update.content.form.sections.general':
+            setono_sylius_gift_card_gift_card:
+                template: '@SetonoSyliusGiftCardPlugin/Admin/Product/Form/_giftCard.html.twig'
+                priority: 450
+
+        'sylius_shop.product.show.content.info.summary.add_to_cart':
+            setono_sylius_gift_card_gift_card_information:
+                template: '@SetonoSyliusGiftCardPlugin/Shop/Product/Show/_addToCartGiftCardInformation.html.twig'
+                priority: 50
+
         'sylius_admin.order.show.content.sections.summary':
             setono_sylius_gift_card_gift_cards:
                 template: '@SetonoSyliusGiftCardPlugin/Admin/Order/Show/Summary/_giftCards.html.twig'
                 priority: -100
+
+        'sylius_shop.base#javascripts':
+            setono_sylius_gift_card_javascripts:
+                template: '@SetonoSyliusGiftCardPlugin/Shop/Layout/_javascripts.html.twig'
+
+        # Below the cart form, as the gift card block posts a form of its own
+        'sylius_shop.cart.index.content':
+            setono_sylius_gift_card_add_gift_card:
+                template: '@SetonoSyliusGiftCardPlugin/Cart/_giftCard.html.twig'
+                priority: 50
 
         'sylius_shop.cart.index.content.form.sections.general.summary':
             setono_sylius_gift_card_gift_cards:
@@ -20,3 +45,43 @@ sylius_twig_hooks:
             setono_sylius_gift_card_gift_cards:
                 template: '@SetonoSyliusGiftCardPlugin/Shop/Order/Summary/_giftCards.html.twig'
                 priority: 150
+
+        'setono_sylius_gift_card.shop.account.gift_card.index.content':
+            breadcrumbs:
+                template: '@SetonoSyliusGiftCardPlugin/Shop/Account/GiftCard/Index/_breadcrumb.html.twig'
+                priority: 200
+
+        'setono_sylius_gift_card.shop.account.gift_card.index.content.main':
+            grid:
+                template: '@SyliusShop/shared/grid.html.twig'
+                priority: -100
+
+        'setono_sylius_gift_card.shop.account.gift_card.index.content.main.header':
+            title:
+                template: '@SetonoSyliusGiftCardPlugin/Shop/Account/GiftCard/Index/_header.html.twig'
+                priority: 0
+
+        # The admin resource routes set these prefixes through `vars.hook_prefix`
+        'setono_sylius_gift_card_admin.gift_card.create.content.form.sections':
+            general:
+                template: '@SetonoSyliusGiftCardPlugin/Admin/GiftCard/_form.html.twig'
+
+        'setono_sylius_gift_card_admin.gift_card.update.content.form.sections':
+            general:
+                template: '@SetonoSyliusGiftCardPlugin/Admin/GiftCard/_form.html.twig'
+
+        'setono_sylius_gift_card_admin.gift_card_configuration.create.content.form.sections':
+            general:
+                template: '@SetonoSyliusGiftCardPlugin/Admin/GiftCardConfiguration/_form.html.twig'
+
+        'setono_sylius_gift_card_admin.gift_card_configuration.update.content.form.sections':
+            general:
+                template: '@SetonoSyliusGiftCardPlugin/Admin/GiftCardConfiguration/_form.html.twig'
+
+        'setono_sylius_gift_card_admin.gift_card.balance':
+            sidebar:
+                template: '@SyliusAdmin/shared/crud/common/sidebar.html.twig'
+                priority: 200
+            navbar:
+                template: '@SyliusAdmin/shared/crud/common/navbar.html.twig'
+                priority: 100

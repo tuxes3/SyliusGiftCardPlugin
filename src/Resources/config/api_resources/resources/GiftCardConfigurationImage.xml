@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<resources
+    xmlns="https://api-platform.com/schema/metadata/resources-3.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://api-platform.com/schema/metadata/resources-3.0 https://api-platform.com/schema/metadata/resources-3.0.xsd"
+>
+    <resource class="%setono_sylius_gift_card.model.gift_card_configuration_image.class%" shortName="GiftCardConfigurationImage">
+        <operations>
+            <operation
+                name="setono_sylius_gift_card_admin_gift_card_configuration_image_post"
+                class="ApiPlatform\Metadata\Post"
+                uriTemplate="/admin/gift-card-configuration-images"
+                controller="setono_sylius_gift_card_plugin.api.upload_gift_card_configuration_image"
+                deserialize="false"
+            >
+                <inputFormats>
+                    <format name="multipart">multipart/form-data</format>
+                </inputFormats>
+                <openapi>
+                    <requestBody description="" required="true">
+                        <content>
+                            <values>
+                                <value name="multipart/form-data">
+                                    <values>
+                                        <value name="schema">
+                                            <values>
+                                                <value name="type">object</value>
+                                                <value name="properties">
+                                                    <values>
+                                                        <value name="type">
+                                                            <values>
+                                                                <value name="type">string</value>
+                                                            </values>
+                                                        </value>
+                                                        <value name="file">
+                                                            <values>
+                                                                <value name="type">string</value>
+                                                                <value name="format">binary</value>
+                                                            </values>
+                                                        </value>
+                                                        <value name="owner">
+                                                            <values>
+                                                                <value name="type">string</value>
+                                                                <value name="format">iri-reference</value>
+                                                            </values>
+                                                        </value>
+                                                    </values>
+                                                </value>
+                                            </values>
+                                        </value>
+                                    </values>
+                                </value>
+                            </values>
+                        </content>
+                    </requestBody>
+                </openapi>
+                <normalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>admin:gift_card_configuration_image:read</value>
+                            </values>
+                        </value>
+                    </values>
+                </normalizationContext>
+                <validationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>sylius</value>
+                            </values>
+                        </value>
+                    </values>
+                </validationContext>
+            </operation>
+
+            <operation
+                name="setono_sylius_gift_card_admin_gift_card_configuration_image_get"
+                class="ApiPlatform\Metadata\Get"
+                uriTemplate="/admin/gift-card-configuration-images/{id}"
+            >
+                <uriVariables>
+                    <uriVariable parameterName="id" fromClass="%setono_sylius_gift_card.model.gift_card_configuration_image.class%"/>
+                </uriVariables>
+                <normalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>admin:gift_card_configuration_image:read</value>
+                            </values>
+                        </value>
+                    </values>
+                </normalizationContext>
+            </operation>
+
+            <operation
+                name="setono_sylius_gift_card_admin_gift_card_configuration_image_delete"
+                class="ApiPlatform\Metadata\Delete"
+                uriTemplate="/admin/gift-card-configuration-images/{id}"
+            >
+                <uriVariables>
+                    <uriVariable parameterName="id" fromClass="%setono_sylius_gift_card.model.gift_card_configuration_image.class%"/>
+                </uriVariables>
+            </operation>
+        </operations>
+    </resource>
+</resources>

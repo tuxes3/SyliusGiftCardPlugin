@@ -1,45 +1,53 @@
-{# @var \Setono\SyliusGiftCardPlugin\Model\GiftCardInterface giftCard #}
-{% extends '@SyliusShop/layout.html.twig' %}
+{# @var \Setono\SyliusGiftCardPlugin\Model\GiftCardInterface|null giftCard #}
+{% extends '@SyliusShop/shared/layout/base.html.twig' %}
 
-{% import "@SyliusShop/Common/Macro/money.html.twig" as money %}
+{% from '@SyliusShop/shared/breadcrumbs.html.twig' import breadcrumbs as breadcrumbs %}
+{% import '@SyliusShop/shared/macro/money.html.twig' as money %}
 
-{% form_theme form '@SyliusShop/Form/theme.html.twig' %}
+{% form_theme form '@SyliusShop/form/theme.html.twig' %}
+
+{% block title %}{{ 'setono_sylius_gift_card.ui.gift_card_search'|trans }} | {{ parent() }}{% endblock %}
 
 {% block content %}
-    <div class="ui breadcrumb">
-        <a href="{{ path('sylius_shop_homepage') }}" class="section">{{ 'sylius.ui.home'|trans }}</a>
-        <div class="divider"> /</div>
-        <div class="active section">{{ 'setono_sylius_gift_card.ui.gift_card'|trans }}</div>
-    </div>
-    <div class="ui segment">
-        <h1 class="ui dividing header">
-            {{ 'setono_sylius_gift_card.ui.gift_card_search'|trans }}
-        </h1>
+    <div class="container mt-4 mb-5">
+        {{ breadcrumbs([
+            { label: 'sylius.ui.home'|trans, path: path('sylius_shop_homepage')},
+            { label: 'setono_sylius_gift_card.ui.gift_card'|trans, active: true }
+        ]) }}
 
-        {{ form_start(form, {'attr': {'class': 'ui form', 'novalidate': 'novalidate'}}) }}
-        {{ form_errors(form) }}
-        {{ form_row(form.giftCard) }}
-        <button type="submit" class="ui primary icon labeled button"><i class="search icon"></i> {{ 'sylius.ui.search'|trans }}</button>
-        {{ form_row(form._token) }}
-        {{ form_end(form, {'render_rest': false}) }}
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <h1 class="mb-4">{{ 'setono_sylius_gift_card.ui.gift_card_search'|trans }}</h1>
 
-        {% if giftCard is not null %}
-            <table class="ui celled table">
-                <thead>
-                    <tr>
-                        <th>{{ 'setono_sylius_gift_card.ui.gift_card'|trans }}</th>
-                        <th>{{ 'setono_sylius_gift_card.ui.amount'|trans }}</th>
-                        <th>{{ 'setono_sylius_gift_card.ui.initial_amount'|trans }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ giftCard.code }}</td>
-                        <td>{{ money.format(giftCard.amount, giftCard.currencyCode) }}</td>
-                        <td>{{ money.format(giftCard.initialAmount, giftCard.currencyCode) }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        {% endif %}
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                {{ form_errors(form) }}
+                <div class="input-group field mb-4" {{ sylius_test_html_attribute('gift-card-search') }}>
+                    {{ form_widget(form.giftCard, sylius_test_form_attribute('gift-card-search-input')) }}
+                    <button type="submit" class="btn btn-primary" {{ sylius_test_html_attribute('gift-card-search-button') }}>{{ 'sylius.ui.search'|trans }}</button>
+                    {{ form_errors(form.giftCard) }}
+                </div>
+                {{ form_row(form._token) }}
+                {{ form_end(form, {'render_rest': false}) }}
+
+                {% if giftCard is not null %}
+                    <table class="table" {{ sylius_test_html_attribute('gift-card-search-result') }}>
+                        <thead>
+                            <tr>
+                                <th>{{ 'setono_sylius_gift_card.ui.gift_card'|trans }}</th>
+                                <th class="text-end">{{ 'setono_sylius_gift_card.ui.amount'|trans }}</th>
+                                <th class="text-end">{{ 'setono_sylius_gift_card.ui.initial_amount'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ giftCard.code }}</td>
+                                <td class="text-end">{{ money.format(giftCard.amount, giftCard.currencyCode) }}</td>
+                                <td class="text-end">{{ money.format(giftCard.initialAmount, giftCard.currencyCode) }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+        </div>
     </div>
 {% endblock %}

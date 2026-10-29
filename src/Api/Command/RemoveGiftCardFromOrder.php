@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Setono\SyliusGiftCardPlugin\Api\Command;
 
+use Setono\SyliusGiftCardPlugin\Api\Attribute\GiftCardCodeAware;
+
+#[GiftCardCodeAware]
 class RemoveGiftCardFromOrder implements GiftCardCodeAwareInterface
 {
-    public ?string $giftCardCode = null;
-
-    public function __construct(public string $orderTokenValue)
+    public function __construct(public string $orderTokenValue, public ?string $giftCardCode = null)
     {
     }
 

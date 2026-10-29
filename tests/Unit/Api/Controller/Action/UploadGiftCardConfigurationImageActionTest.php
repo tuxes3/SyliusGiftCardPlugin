@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Setono\SyliusGiftCardPlugin\Tests\Unit\Api\Controller\Action;
 
-use PHPUnit\Framework\Attributes\Test;
-use ApiPlatform\Core\Api\IriConverterInterface;
+use ApiPlatform\Metadata\IriConverterInterface;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Setono\SyliusGiftCardPlugin\Api\Controller\Action\UploadGiftCardConfigurationImageAction;
 use Setono\SyliusGiftCardPlugin\Model\GiftCardConfiguration;
 use Setono\SyliusGiftCardPlugin\Model\GiftCardConfigurationImage;
@@ -20,41 +19,17 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class UploadGiftCardConfigurationImageActionTest extends TestCase
 {
-    use ProphecyTrait;
-
     #[Test]
     public function it_uploads_gift_card_configuration_image(): void
     {
         $file = new UploadedFile(__DIR__ . '/file.jpg', 'file.jpg');
-        $image = new GiftCardConfigurationImage();
         $owner = new GiftCardConfiguration();
 
-        $request = new Request([], [
-            'type' => 'background',
-            'owner' => 'super-iri',
-        ], [], [], [
-            'file' => $file,
-        ]);
-        $giftCardConfigurationImageFactory = $this->prophesize(FactoryInterface::class);
-        $iriConverter = $this->prophesize(IriConverterInterface::class);
-        $imageUploader = $this->prophesize(ImageUploaderInterface::class);
-        $giftCardConfigurationImageRepository = $this->prophesize(RepositoryInterface::class);
+        $imageUploader = $this->createMock(ImageUploaderInterface::class);
+        $imageUploader->expects(self::once())->method('upload');
 
-        $giftCardConfigurationImageFactory
-            ->createNew()
-            ->willReturn($image);
-
-        $iriConverter
-            ->getItemFromIri('super-iri')
-            ->willReturn($owner);
-
-        $uploadGiftCardConfigurationImageAction = new UploadGiftCardConfigurationImageAction(
-            $giftCardConfigurationImageFactory->reveal(),
-            $giftCardConfigurationImageRepository->reveal(),
-            $imageUploader->reveal(),
-            $iriConverter->reveal(),
-        );
-        $returnedImage = $uploadGiftCardConfigurationImageAction($request);
+        $action = $this->createAction(new GiftCardConfigurationImage(), $owner, $imageUploader);
+        $returnedImage = $action($this->createRequest('background', 'super-iri', $file));
 
         self::assertSame($owner, $returnedImage->getOwner());
         self::assertSame('background', $returnedImage->getType());
@@ -62,144 +37,80 @@ final class UploadGiftCardConfigurationImageActionTest extends TestCase
     }
 
     #[Test]
-    public function it_throws_error_if_image_empty(): void
+    public function it_takes_type_and_owner_from_the_query_string(): void
     {
-        $image = new GiftCardConfigurationImage();
+        $file = new UploadedFile(__DIR__ . '/file.jpg', 'file.jpg');
+        $owner = new GiftCardConfiguration();
+        $request = new Request(['type' => 'background', 'owner' => 'super-iri'], [], [], [], ['file' => $file]);
 
-        $request = new Request([], [
-            'type' => null,
-            'owner' => 'super-iri',
-        ]);
-        $giftCardConfigurationImageFactory = $this->prophesize(FactoryInterface::class);
-        $iriConverter = $this->prophesize(IriConverterInterface::class);
-        $imageUploader = $this->prophesize(ImageUploaderInterface::class);
-        $giftCardConfigurationImageRepository = $this->prophesize(RepositoryInterface::class);
+        $returnedImage = $this->createAction(new GiftCardConfigurationImage(), $owner)($request);
 
-        $giftCardConfigurationImageFactory
-            ->createNew()
-            ->willReturn($image);
-
-        $this->expectException(InvalidArgumentException::class);
-
-        $uploadGiftCardConfigurationImageAction = new UploadGiftCardConfigurationImageAction(
-            $giftCardConfigurationImageFactory->reveal(),
-            $giftCardConfigurationImageRepository->reveal(),
-            $imageUploader->reveal(),
-            $iriConverter->reveal(),
-        );
-        $uploadGiftCardConfigurationImageAction($request);
+        self::assertSame($owner, $returnedImage->getOwner());
     }
 
     #[Test]
-    public function it_throws_error_if_owner_iri_empty(): void
+    public function it_throws_error_if_image_type_is_empty(): void
     {
-        $file = new UploadedFile(__DIR__ . '/file.jpg', 'file.jpg');
-        $image = new GiftCardConfigurationImage();
-
-        $request = new Request([], [
-            'type' => 'background',
-            'owner' => 'super-iri',
-        ], [], [], [
-            'file' => $file,
-        ]);
-        $giftCardConfigurationImageFactory = $this->prophesize(FactoryInterface::class);
-        $iriConverter = $this->prophesize(IriConverterInterface::class);
-        $imageUploader = $this->prophesize(ImageUploaderInterface::class);
-        $giftCardConfigurationImageRepository = $this->prophesize(RepositoryInterface::class);
-
-        $giftCardConfigurationImageFactory
-            ->createNew()
-            ->willReturn($image);
-
         $this->expectException(InvalidArgumentException::class);
 
-        $uploadGiftCardConfigurationImageAction = new UploadGiftCardConfigurationImageAction(
-            $giftCardConfigurationImageFactory->reveal(),
-            $giftCardConfigurationImageRepository->reveal(),
-            $imageUploader->reveal(),
-            $iriConverter->reveal(),
-        );
-        $uploadGiftCardConfigurationImageAction($request);
+        $this->createAction(new GiftCardConfigurationImage(), new GiftCardConfiguration())($this->createRequest(null, 'super-iri'));
     }
 
     #[Test]
-    public function it_throws_error_if_owner_not_found(): void
+    public function it_throws_error_if_owner_iri_is_empty(): void
     {
-        $file = new UploadedFile(__DIR__ . '/file.jpg', 'file.jpg');
-        $image = new GiftCardConfigurationImage();
-
-        $request = new Request([], [
-            'type' => 'background',
-            'owner' => 'super-iri',
-        ], [], [], [
-            'file' => $file,
-        ]);
-        $giftCardConfigurationImageFactory = $this->prophesize(FactoryInterface::class);
-        $iriConverter = $this->prophesize(IriConverterInterface::class);
-        $imageUploader = $this->prophesize(ImageUploaderInterface::class);
-        $giftCardConfigurationImageRepository = $this->prophesize(RepositoryInterface::class);
-
-        $giftCardConfigurationImageFactory
-            ->createNew()
-            ->willReturn($image);
-
-        $iriConverter
-            ->getItemFromIri('super-iri')
-            ->willReturn(null);
-
         $this->expectException(InvalidArgumentException::class);
 
-        $uploadGiftCardConfigurationImageAction = new UploadGiftCardConfigurationImageAction(
-            $giftCardConfigurationImageFactory->reveal(),
-            $giftCardConfigurationImageRepository->reveal(),
-            $imageUploader->reveal(),
-            $iriConverter->reveal(),
-        );
-        $uploadGiftCardConfigurationImageAction($request);
+        $this->createAction(new GiftCardConfigurationImage(), new GiftCardConfiguration())($this->createRequest('background', null));
+    }
+
+    #[Test]
+    public function it_throws_error_if_owner_is_not_a_gift_card_configuration(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->createAction(new GiftCardConfigurationImage(), new \stdClass())($this->createRequest('background', 'super-iri'));
     }
 
     #[Test]
     public function it_deletes_old_image_of_same_type(): void
     {
-        $file = new UploadedFile(__DIR__ . '/file.jpg', 'file.jpg');
-        $image = new GiftCardConfigurationImage();
         $oldImage = new GiftCardConfigurationImage();
         $oldImage->setType('background');
         $owner = new GiftCardConfiguration();
-
         $owner->addImage($oldImage);
 
-        $request = new Request([], [
-            'type' => 'background',
-            'owner' => 'super-iri',
-        ], [], [], [
-            'file' => $file,
-        ]);
-        $giftCardConfigurationImageFactory = $this->prophesize(FactoryInterface::class);
-        $iriConverter = $this->prophesize(IriConverterInterface::class);
-        $imageUploader = $this->prophesize(ImageUploaderInterface::class);
-        $giftCardConfigurationImageRepository = $this->prophesize(RepositoryInterface::class);
+        $repository = $this->createMock(RepositoryInterface::class);
+        $repository->expects(self::once())->method('remove')->with($oldImage);
 
-        $giftCardConfigurationImageFactory
-            ->createNew()
-            ->willReturn($image);
+        $image = new GiftCardConfigurationImage();
+        $this->createAction($image, $owner, null, $repository)($this->createRequest('background', 'super-iri'));
 
-        $iriConverter
-            ->getItemFromIri('super-iri')
-            ->willReturn($owner);
+        self::assertSame([$image], $owner->getImagesByType('background')->getValues());
+    }
 
-        $giftCardConfigurationImageRepository->remove($oldImage)->shouldBeCalled();
+    private function createAction(
+        GiftCardConfigurationImage $image,
+        object $owner,
+        ?ImageUploaderInterface $imageUploader = null,
+        ?RepositoryInterface $repository = null,
+    ): UploadGiftCardConfigurationImageAction {
+        $factory = $this->createMock(FactoryInterface::class);
+        $factory->method('createNew')->willReturn($image);
 
-        $uploadGiftCardConfigurationImageAction = new UploadGiftCardConfigurationImageAction(
-            $giftCardConfigurationImageFactory->reveal(),
-            $giftCardConfigurationImageRepository->reveal(),
-            $imageUploader->reveal(),
-            $iriConverter->reveal(),
+        $iriConverter = $this->createMock(IriConverterInterface::class);
+        $iriConverter->method('getResourceFromIri')->with('super-iri')->willReturn($owner);
+
+        return new UploadGiftCardConfigurationImageAction(
+            $factory,
+            $repository ?? $this->createMock(RepositoryInterface::class),
+            $imageUploader ?? $this->createMock(ImageUploaderInterface::class),
+            $iriConverter,
         );
-        $returnedImage = $uploadGiftCardConfigurationImageAction($request);
+    }
 
-        self::assertEquals(1, $owner->getImagesByType('background')->count());
-        $image = $owner->getImagesByType('background')->first();
-        self::assertEquals($returnedImage, $image);
+    private function createRequest(?string $type, ?string $owner, ?UploadedFile $file = null): Request
+    {
+        return new Request([], array_filter(['type' => $type, 'owner' => $owner]), [], [], ['file' => $file ?? new UploadedFile(__DIR__ . '/file.jpg', 'file.jpg')]);
     }
 }

@@ -1,6 +1,5 @@
 imports:
     - { resource: "@SetonoSyliusGiftCardPlugin/Resources/config/grids.yaml" }
-    - { resource: "@SetonoSyliusGiftCardPlugin/Resources/config/sylius_ui.yaml" }
     - { resource: "@SetonoSyliusGiftCardPlugin/Resources/config/app/twig_hooks.yaml" }
 
     - { resource: "@SetonoSyliusGiftCardPlugin/Resources/config/state_machine/sylius_order.yaml" }
@@ -15,13 +14,6 @@ sylius_mailer:
         gift_card_order:
             subject: setono_sylius_gift_card.email.your_gift_cards_you_bought_in_the_order
             template: "@SetonoSyliusGiftCardPlugin/Email/giftCardsFromOrder.html.twig"
-
-framework:
-    serializer:
-        enabled: true
-        mapping:
-            paths:
-                - '%kernel.project_dir%/vendor/setono/sylius-gift-card-plugin/src/Resources/config/serialization/'
 
 liip_imagine:
     filter_sets:

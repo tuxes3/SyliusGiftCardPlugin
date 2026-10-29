@@ -1,7 +1,11 @@
+{% set form = hookable_metadata.context.form %}
+
 {% if form.giftCardInformation is defined %}
-    {% set giftCardInformationForm = form.giftCardInformation %}
-    {% if giftCardInformationForm.amount is defined %}
-        {{ form_row(giftCardInformationForm.amount, sylius_test_form_attribute('gift-card-amount-input')) }}
-    {% endif %}
-    {{ form_row(giftCardInformationForm.customMessage, sylius_test_form_attribute('gift-card-custom-message-input')) }}
+    {% set gift_card_information_form = form.giftCardInformation %}
+    <div class="mb-4">
+        {% if gift_card_information_form.amount is defined %}
+            {{ form_row(gift_card_information_form.amount, sylius_test_form_attribute('gift-card-amount-input')) }}
+        {% endif %}
+        {{ form_row(gift_card_information_form.customMessage, sylius_test_form_attribute('gift-card-custom-message-input')) }}
+    </div>
 {% endif %}

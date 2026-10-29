@@ -46,7 +46,7 @@ sylius_grid:
             actions:
                 item:
                     download_pdf:
-                        type: show
+                        type: shop_show
                         label: setono_sylius_gift_card.ui.download_pdf
                         options:
                             link:

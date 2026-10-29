@@ -1,64 +1,129 @@
-{% form_theme form '@SyliusAdmin/Form/imagesTheme.html.twig' %}
+{% macro channel_configuration(entry) %}
+    <div class="row align-items-end" data-ssgc-collection-item>
+        <div class="col">{{ form_row(entry.channel) }}</div>
+        <div class="col">{{ form_row(entry.locale) }}</div>
+        <div class="col-auto mb-3">
+            <button type="button" class="btn btn-outline-danger" data-ssgc-collection-remove>{{ 'sylius.ui.delete'|trans }}</button>
+        </div>
+    </div>
+{% endmacro %}
 
-<style>
-    /* This is a hack to fix this: https://github.com/Setono/SyliusGiftCardPlugin/issues/207 */
-    .ui.grid:empty {
-        display: none;
-    }
-</style>
+{% set form = hookable_metadata.context.form %}
+{% set resource = hookable_metadata.context.resource %}
+{% set background_image = form.backgroundImage.vars.value %}
 
-{{ form_errors(form) }}
-<div class="ui two column stackable grid">
-    <div class="column">
-        <div class="ui segment">
-            {{ form_row(form.code) }}
-            <div class="required field">
+<div class="col-12 col-md-6">
+    <div class="card mb-3">
+        <div class="card-header">
+            <div class="card-title">{{ 'sylius.ui.general'|trans }}</div>
+        </div>
+        <div class="card-body">
+            {{ form_row(form.code, sylius_test_form_attribute('code')) }}
+            <div class="mb-3">
                 {{ form_label(form.defaultValidityPeriod) }}
-                <div class="ui action input">
-                    {{ form_widget(form.defaultValidityPeriod.value) }}
-                    {{ form_widget(form.defaultValidityPeriod.unit, {'attr': {'class': 'ui compact selection dropdown'}}) }}
+                <div class="input-group">
+                    {{ form_widget(form.defaultValidityPeriod.value, sylius_test_form_attribute('default-validity-period-value')) }}
+                    {{ form_widget(form.defaultValidityPeriod.unit, sylius_test_form_attribute('default-validity-period-unit')) }}
                 </div>
+                {{ form_errors(form.defaultValidityPeriod) }}
             </div>
-            <div class="field" id="ssgc_configuration_background_image">
-                {{ form_label(form.backgroundImage) }}
-                {{ form_widget(form.backgroundImage) }}
-                {{ form_errors(form.backgroundImage) }}
-            </div>
+            {% if background_image is not null and background_image.path is not null %}
+                <img class="img-thumbnail mb-2" src="{{ background_image.path|imagine_filter('sylius_small') }}" alt="" {{ sylius_test_html_attribute('background-image') }}>
+            {% endif %}
+            {{ form_row(form.backgroundImage) }}
             {{ form_row(form.pageSize) }}
             {{ form_row(form.orientation) }}
         </div>
     </div>
-    <div class="column">
-        <div class="ui segment">
-            {{ form_row(form.enabled) }}
-            {{ form_row(form.default) }}
-            {{ form_row(form.channelConfigurations) }}
+</div>
+
+<div class="col-12 col-md-6">
+    <div class="card mb-3">
+        <div class="card-header">
+            <div class="card-title">{{ 'setono_sylius_gift_card.ui.channel_configurations'|trans }}</div>
+        </div>
+        <div class="card-body">
+            {{ form_row(form.enabled, sylius_test_form_attribute('enabled')|merge({ label_attr: { class: 'checkbox-switch' } })) }}
+            {{ form_row(form.default, sylius_test_form_attribute('default')|merge({ label_attr: { class: 'checkbox-switch' } })) }}
+
+            <div
+                id="setono-sylius-gift-card-channel-configurations"
+                data-prototype="{{ _self.channel_configuration(form.channelConfigurations.vars.prototype)|e('html_attr') }}"
+                data-index="{{ form.channelConfigurations|length > 0 ? form.channelConfigurations|last.vars.name + 1 : 0 }}"
+                {{ sylius_test_html_attribute('channel-configurations') }}
+            >
+                <div data-ssgc-collection-items>
+                    {% for entry in form.channelConfigurations %}
+                        {{ _self.channel_configuration(entry) }}
+                    {% endfor %}
+                </div>
+                {{ form_errors(form.channelConfigurations) }}
+                <button type="button" class="btn btn-outline-primary" data-ssgc-collection-add>{{ 'sylius.ui.add'|trans }}</button>
+            </div>
+            {% do form.channelConfigurations.setRendered %}
+            <script>
+                (() => {
+                    const collection = document.getElementById('setono-sylius-gift-card-channel-configurations');
+
+                    collection.addEventListener('click', (event) => {
+                        if (event.target.closest('[data-ssgc-collection-remove]')) {
+                            event.target.closest('[data-ssgc-collection-item]').remove();
+                        }
+
+                        if (event.target.closest('[data-ssgc-collection-add]')) {
+                            const index = Number(collection.dataset.index);
+                            collection.dataset.index = String(index + 1);
+                            collection.querySelector('[data-ssgc-collection-items]').insertAdjacentHTML('beforeend', collection.dataset.prototype.replace(/__name__/g, String(index)));
+                        }
+                    });
+                })();
+            </script>
         </div>
     </div>
 </div>
 
-<div class="ui hidden divider"></div>
-
-<h3 class="ui top attached header">
-    {{ 'setono_sylius_gift_card.ui.gift_card_configuration_pdf_live_rendering.title'|trans }}
-</h3>
-<div class="ui attached segment">
-    <div class="ui two column stackable grid">
-        <div class="column">
-            {{ form_row(form.template, {'attr': {'rows': 40}}) }}
-            {% if resource.id is not null %}
-                <button class="ui button primary labeled icon js-ssgc-apply-pdf-changes"
-                        data-url="{{ path('setono_sylius_gift_card_admin_ajax_generate_pdf', {'id': resource.id}) }}">
-                    <i class="icon check"></i>
-                    {{ 'setono_sylius_gift_card.ui.update_preview'|trans }}
-                </button>
-            {% endif %}
+<div class="col-12">
+    <div class="card mb-3">
+        <div class="card-header">
+            <div class="card-title">{{ 'setono_sylius_gift_card.ui.gift_card_configuration_pdf_live_rendering.title'|trans }}</div>
         </div>
-        <div class="column js-ssgc-live-render-container" style="height: 900px;">
-            <embed id="js-ssgc-live-render-box"
-                   src="data:application/pdf;base64,{{ ssgc_get_base64_encoded_example_pdf_content(resource, true) }}"
-                   style="width: 100%;height: 100%;"
-            />
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 {{ resource.id is not null ? 'col-lg-6' }}">
+                    {{ form_row(form.template, {'attr': {'rows': 40}}) }}
+                </div>
+                {% if resource.id is not null %}
+                    <div class="col-12 col-lg-6">
+                        <button
+                            type="button"
+                            class="btn btn-primary mb-3"
+                            id="setono-sylius-gift-card-update-pdf-preview"
+                            data-url="{{ path('setono_sylius_gift_card_admin_ajax_generate_pdf', {'id': resource.id}) }}"
+                            {{ sylius_test_html_attribute('update-pdf-preview') }}
+                        >
+                            {{ 'setono_sylius_gift_card.ui.update_preview'|trans }}
+                        </button>
+                        <div id="setono-sylius-gift-card-pdf-preview" style="height: 900px;">
+                            <embed src="data:application/pdf;base64,{{ ssgc_get_base64_encoded_example_pdf_content(resource, true) }}" style="width: 100%; height: 100%;">
+                        </div>
+                    </div>
+                    <script>
+                        document.getElementById('setono-sylius-gift-card-update-pdf-preview').addEventListener('click', async (event) => {
+                            const button = event.currentTarget;
+                            const response = await fetch(button.dataset.url, {
+                                method: 'POST',
+                                body: new FormData(button.form ?? button.closest('form')),
+                                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                            });
+
+                            if (response.ok) {
+                                // A new element, as browsers do not reload an embed whose src changes
+                                document.getElementById('setono-sylius-gift-card-pdf-preview').innerHTML = `<embed src="data:application/pdf;base64,${await response.text()}" style="width: 100%; height: 100%;">`;
+                            }
+                        });
+                    </script>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
